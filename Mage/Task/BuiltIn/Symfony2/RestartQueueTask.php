@@ -35,11 +35,11 @@ class RestartQueueTask extends SymfonyAbstractTask
         $this->runCommand($command);
         $command = sprintf('%s resque:worker-stop -a --quiet', $this->getAppPath());
         $this->runCommand($command);
-        $command = sprintf('%s resque:scheduledworker-start -i 1', $this->getAppPath());
+        $command = sprintf('%s resque:scheduledworker-start -i 1 --quiet >> /dev/null &', $this->getAppPath());
         $this->runCommand($command);
 
         foreach ($workers as $worker) {
-            $command = sprintf('%s resque:worker-start %s', $this->getAppPath(), $worker);
+            $command = sprintf('%s resque:worker-start %s --quiet >> /dev/null &', $this->getAppPath(), $worker);
             $this->runCommand($command);
         }
 
